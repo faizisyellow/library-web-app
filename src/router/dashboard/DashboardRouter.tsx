@@ -8,26 +8,27 @@ import Overview from "@/pages/dashboard/overview/Overview";
 const DashboardRouter = [
   {
     index: true,
+    path: "/dashboard",
     element: <Overview />,
   },
   {
-    path: "books",
+    path: "/dashboard/books",
     element: <Books />,
   },
   {
-    path: "books/new-book",
+    path: "/dashboard/books/new-book",
     element: <CreateBook />,
   },
   {
-    path: "books/:id",
+    path: "/dashboard/books/:id",
     element: <EditBook />,
   },
   {
-    path: "category",
+    path: "/dashboard/category",
     element: <Category />,
   },
   {
-    path: "borrowing",
+    path: "/dashboard/borrowing",
     element: <Borrowing />,
   },
 ];

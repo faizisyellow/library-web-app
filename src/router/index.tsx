@@ -1,28 +1,43 @@
 import { Route, Routes } from "react-router";
 import BaseRouter from "./base/BaseRouter";
 import DashboardRouter from "./dashboard/DashboardRouter";
+import NotFound from "@/pages/not-found/NotFound";
+import { PrivateRoute, PublicRoute } from "@/components/private-route/PrivateRoute";
+import App from "@/App";
 
 const RootRouter = () => {
   return (
     <Routes>
+      <Route
+        path="/"
+        element={<App />}
+      />
+
       {BaseRouter.map((item, index) => (
         <Route
           key={index}
           path={item.path}
-          element={item.element}
+          element={<PublicRoute>{item.element}</PublicRoute>}
         />
       ))}
 
-      <Route path="/dashboard">
+      <Route
+        path="/dashboard"
+        element={<PrivateRoute roles={["ADMIN"]} />}
+      >
         {DashboardRouter.map((item, index) => (
           <Route
             key={index}
-            index={item.index}
             path={item.path}
             element={item.element}
           />
         ))}
       </Route>
+
+      <Route
+        path="*"
+        element={<NotFound />}
+      />
     </Routes>
   );
 };

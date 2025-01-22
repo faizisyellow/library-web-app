@@ -3,11 +3,17 @@ import React from "react";
 import { Card, CardContent } from "../ui/card";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+import { useLoginMutation } from "@/store/service/auth";
+import { LoginRequest } from "@/store/service/auth/type";
+import { getErrorObject } from "@/lib/helpers/error-message";
+import { useToast } from "@/hooks/use-toast";
+import { ToastAction } from "../ui/toast";
+import Cookies from "js-cookie";
 
 interface LoginFormProps {}
 
@@ -17,6 +23,10 @@ const formSchema = z.object({
 });
 
 const LoginForm: React.FC<LoginFormProps> = ({ className, ...props }: React.ComponentProps<"div">) => {
+  const [login] = useLoginMutation();
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -25,10 +35,28 @@ const LoginForm: React.FC<LoginFormProps> = ({ className, ...props }: React.Comp
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const response = await login(values as LoginRequest);
+
+      const error = getErrorObject(response.error);
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: error.messages,
+          action: <ToastAction altText="Try again">Try again</ToastAction>,
+        });
+        return;
+      }
+
+      localStorage.setItem("role", JSON.stringify(response.data.data.user.role));
+      Cookies.set("token", response.data.data.token, { secure: true, sameSite: "None", expires: 60 * 24 * 60 * 60 * 1000 });
+
+      navigate("/");
+    } catch (error) {
+      form.reset();
+      console.log(error);
+    }
   }
 
   return (
