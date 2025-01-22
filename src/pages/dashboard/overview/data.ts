@@ -10,6 +10,7 @@ export const data = {
         id: "2838e688-3379-44c3-8b98-f72e3e2d2ff0",
         title: "Lucifer",
         coverImage: "Lucifer.jpg",
+        author: "lizzy",
       },
     },
     {
@@ -19,6 +20,7 @@ export const data = {
         id: "2838e688-3379-44c3-8b98-f72e3e2d2ff0",
         title: "Lucifer",
         coverImage: "Lucifer.jpg",
+        author: "lizzy",
       },
     },
   ],

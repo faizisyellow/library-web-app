@@ -1,5 +1,5 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { formatUSDateTimeShort } from "@/lib/format/time";
 import React from "react";
 
 interface RecentBorrowProps {
@@ -20,17 +20,16 @@ const RecentBorrow: React.FC<RecentBorrowProps> = ({ data }) => {
               key={index}
               className="flex items-center"
             >
-              <Avatar className="h-9 w-9">
-                <AvatarImage
-                  src="https://api.slingacademy.com/public/sample-users/1.png"
-                  alt="Avatar"
-                />
-                <AvatarFallback>OM</AvatarFallback>
-              </Avatar>
+              <img
+                src={"https://i1.sndcdn.com/avatars-njtnly1CSaXFBoFn-SxMbXQ-t1080x1080.jpg"}
+                alt={item.book.title}
+                className="w-11 h-11 rounded-md object-cover"
+              />
               <div className="ml-4 space-y-1">
                 <p className="text-sm font-medium leading-none">{item.book.title}</p>
+                <div className="ml-auto font-medium">{item.book.author}</div>
               </div>
-              <div className="ml-auto font-medium">+$1,999.00</div>
+              <div className="ml-auto font-medium">{formatUSDateTimeShort(item.borrowDate)}</div>
             </div>
           ))}
         </div>
