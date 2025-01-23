@@ -14,7 +14,7 @@ export interface Book {
 
 export interface EditBookRequest {
   id: string;
-  data: Book;
+  dataUpdate: FormData;
 }
 
 export interface GetBooksResponse {
@@ -27,8 +27,8 @@ export interface GetBooksResponse {
       id: string;
       name: string;
     };
-    coverImage: string | File;
-  }[];
+    coverImage: string;
+  };
   message: string;
   status: string;
 }

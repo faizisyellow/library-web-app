@@ -7,20 +7,20 @@ import { Button } from "../ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { useGetCategoriesQuery } from "@/store/service/categories";
 
-interface ProductFormProps {
+interface BookFormProps {
   form: UseFormReturn<{
     title: string;
     author: string;
-    coverImage: File;
     categoryId: string;
+    coverImage?: string | File | undefined;
   }>;
   onSubmit: (values: any) => void;
   isLoading: boolean;
+  mode?: "create" | "edit";
 }
 
-const BookForm: React.FC<ProductFormProps> = ({ form, onSubmit, isLoading }) => {
-  const { data } = useGetCategoriesQuery();
-
+const BookForm: React.FC<BookFormProps> = ({ form, onSubmit, isLoading, mode = "create" }) => {
+  const { data: categories } = useGetCategoriesQuery();
   return (
     <Card>
       <CardContent className="py-8">
@@ -51,18 +51,20 @@ const BookForm: React.FC<ProductFormProps> = ({ form, onSubmit, isLoading }) => 
                   <FormItem>
                     <FormLabel>Cover Image</FormLabel>
                     <FormControl>
-                      <Input
-                        type="file"
-                        accept="image/*"
-                        disabled={isLoading}
-                        onChange={(e) => {
-                          const file = e.target.files?.[0];
-                          if (file) {
-                            onChange(file);
-                          }
-                        }}
-                        {...field}
-                      />
+                      <div>
+                        <Input
+                          type="file"
+                          accept="image/*"
+                          disabled={isLoading}
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              onChange(file);
+                            }
+                          }}
+                          {...field}
+                        />
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -95,15 +97,15 @@ const BookForm: React.FC<ProductFormProps> = ({ form, onSubmit, isLoading }) => 
                     <FormLabel>Category</FormLabel>
                     <Select
                       onValueChange={field.onChange}
-                      defaultValue={field.value}
+                      value={field.value}
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select a category" />
+                          <SelectValue placeholder="Select a category">{categories?.data?.find((cat) => cat.id === field.value)?.name}</SelectValue>
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {data?.data?.map((cat) => (
+                        {categories?.data?.map((cat) => (
                           <SelectItem
                             key={cat.id}
                             value={cat.id}
@@ -123,7 +125,7 @@ const BookForm: React.FC<ProductFormProps> = ({ form, onSubmit, isLoading }) => 
                 type="submit"
                 disabled={isLoading}
               >
-                {isLoading ? "Creating..." : "Create Book"}
+                {isLoading ? (mode === "create" ? "Creating..." : "Updating...") : mode === "create" ? "Create Book" : "Update Book"}
               </Button>
             </div>
           </form>

@@ -9,17 +9,18 @@ export interface ReturnBorrowBookRequest {
 export interface BorrowBook {
   id: string;
   borrowDate: string;
-  returnDate: string;
+  returnDate: string | null;
   status: string;
   book: {
     id: string;
     title: string;
     author: string;
     coverImage: string;
-  }[];
+  };
   user: {
     id: string;
     username: string;
+    email?: string;
   };
 }
 

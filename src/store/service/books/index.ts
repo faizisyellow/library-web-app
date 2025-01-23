@@ -15,6 +15,13 @@ export const booksApi = createApi({
       }),
       providesTags: ["Books"],
     }),
+    getBook: builder.query<GetBooksResponse, string>({
+      query: (id) => ({
+        url: `books/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["Books"],
+    }),
     createBooks: builder.mutation<any, FormData>({
       query: (formData) => ({
         url: "books",
@@ -24,10 +31,10 @@ export const booksApi = createApi({
       invalidatesTags: ["Books"],
     }),
     editBooks: builder.mutation<any, EditBookRequest>({
-      query: ({ data, id }) => ({
+      query: ({ dataUpdate, id }) => ({
         url: `books/${id}`,
         method: "PATCH",
-        body: data,
+        body: dataUpdate,
       }),
       invalidatesTags: ["Books"],
     }),
@@ -41,4 +48,4 @@ export const booksApi = createApi({
   }),
 });
 
-export const { useGetBooksQuery, useCreateBooksMutation, useEditBooksMutation, useDeleteBooksMutation } = booksApi;
+export const { useGetBooksQuery, useCreateBooksMutation, useEditBooksMutation, useDeleteBooksMutation, useGetBookQuery } = booksApi;

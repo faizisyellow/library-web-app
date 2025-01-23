@@ -1,25 +1,28 @@
 import React from "react";
 import Layout from "../../Layout";
 import Title from "@/components/ui/title";
+import BookForm from "@/components/book-form/BookForm";
+
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import BookForm from "@/components/book-form/BookForm";
 import { useCreateBooksMutation } from "@/store/service/books";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router";
+import { getErrorObject } from "@/lib/helpers/error-message";
+import { ToastAction } from "@/components/ui/toast";
 
 interface CreateBookProps {}
 
 const formSchema = z.object({
-  title: z.string().min(1),
-  author: z.string().min(1),
-  coverImage: z.instanceof(File, { message: "Cover image is required" }),
-  categoryId: z.string().min(1),
+  title: z.string().min(1, "Title is required"),
+  author: z.string().min(1, "Author is required"),
+  coverImage: z.union([z.instanceof(File), z.string().optional()]).optional(),
+  categoryId: z.string().min(1, "Category is required"),
 });
 
-const CreateBook: React.FC<CreateBookProps> = ({}) => {
-  const [createbook] = useCreateBooksMutation();
+const CreateBook: React.FC<CreateBookProps> = () => {
+  const [createBook, { isLoading: isCreating }] = useCreateBooksMutation();
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -39,19 +42,37 @@ const CreateBook: React.FC<CreateBookProps> = ({}) => {
       formData.append("title", values.title);
       formData.append("author", values.author);
       formData.append("categoryId", values.categoryId);
-      formData.append("coverImage", values.coverImage);
 
-      await createbook(formData).unwrap();
+      if (values.coverImage instanceof File) {
+        formData.append("coverImage", values.coverImage);
+      }
+
+      const response = await createBook(formData).unwrap();
+
+      const error = getErrorObject(response.error);
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: error.messages,
+          action: <ToastAction altText="Try again">Try again</ToastAction>,
+        });
+        return;
+      }
+
       toast({
         variant: "default",
-        title: "Add book successfull",
+        title: "Book Added Successfully",
       });
-      form.reset();
 
+      form.reset();
       navigate("/dashboard/books");
     } catch (error) {
-      // Handle error (show error toast/message)
-      console.error("Book creation failed:", error);
+      const errorObj = getErrorObject(error);
+      toast({
+        variant: "destructive",
+        title: errorObj?.messages || "Failed to create book",
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+      });
     }
   };
 
@@ -66,7 +87,7 @@ const CreateBook: React.FC<CreateBookProps> = ({}) => {
           <BookForm
             form={form}
             onSubmit={handleSubmit}
-            isLoading={false}
+            isLoading={isCreating}
           />
         </div>
       </div>

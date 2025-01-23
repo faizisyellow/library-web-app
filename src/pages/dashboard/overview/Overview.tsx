@@ -21,7 +21,7 @@ const Overview: React.FC<OverviewProps> = ({}) => {
               <Book />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{data?.data?.books}</div>
+              <div className="text-2xl font-bold">{data?.data?.books ?? 0}</div>
               <p className="text-xs text-muted-foreground">Total all books</p>
             </CardContent>
           </Card>
@@ -31,7 +31,7 @@ const Overview: React.FC<OverviewProps> = ({}) => {
               <Users />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{data?.data?.users}</div>
+              <div className="text-2xl font-bold">{data?.data?.users ?? 0}</div>
               <p className="text-xs text-muted-foreground">Total all users</p>
             </CardContent>
           </Card>
@@ -41,7 +41,7 @@ const Overview: React.FC<OverviewProps> = ({}) => {
               <ChartColumnStacked />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{data?.data?.categories}</div>
+              <div className="text-2xl font-bold">{data?.data?.categories ?? 0}</div>
               <p className="text-xs text-muted-foreground">Total all category books</p>
             </CardContent>
           </Card>
@@ -58,8 +58,11 @@ const Overview: React.FC<OverviewProps> = ({}) => {
         </div>
 
         <div className="py-8 grid grid-cols-2 gap-x-4">
-          <ChartOverview data={data?.data?.chartCategoryBooksData ?? []} />
-          <RecentBorrow data={data?.data?.recentBorrowsBook ?? []} />
+          <ChartOverview data={data?.data?.chartCategoryBooksData!} />
+          <RecentBorrow
+            data={data?.data?.recentBorrowsBook!}
+            total={data?.data?.recentBorrowsBook.length!}
+          />
         </div>
       </div>
     </Layout>

@@ -10,6 +10,7 @@ export interface RecentBorrowsBook {
     coverImage: string | File;
     id: string;
     title: string;
+    author: string;
   };
 }
 
@@ -19,6 +20,7 @@ export interface DataDashboardOverview {
   chartCategoryBooksData: CategoryBooksData[];
   recentBorrowsBook: RecentBorrowsBook[];
   users: number;
+  borrowBooks: number;
 }
 
 export interface GetDashboardOverviewResponse {

@@ -5,77 +5,15 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { formatUSDateTimeShort } from "@/lib/format/time";
+import { useGetBorrowBooksQuery } from "@/store/service/borrowing";
+import EmptyState from "@/components/empty-state/EmptyState";
+import { FolderX } from "lucide-react";
 
 interface BorrowingProps {}
 
-const data = [
-  {
-    id: "b9917b4c-a324-40d8-b7a6-e0c4369db78d",
-    borrowDate: "2025-01-21T00:07:17.959Z",
-    returnDate: "2025-01-21T02:00:40.520Z",
-    status: "returned",
-    book: {
-      id: "2838e688-3379-44c3-8b98-f72e3e2d2ff0",
-      title: "Lucifer",
-      author: "Cloe",
-      coverImage: "Lucifer.jpg",
-    },
-    user: {
-      id: "34e98017-0380-4132-894e-e0fda3cae65f",
-      email: "kate@gmail.com",
-    },
-  },
-  {
-    id: "5a45dd3d-0b9a-4c3c-99a8-56ecca052744",
-    borrowDate: "2025-01-21T00:13:10.995Z",
-    returnDate: "2025-01-21T01:58:26.107Z",
-    status: "returned",
-    book: {
-      id: "2838e688-3379-44c3-8b98-f72e3e2d2ff0",
-      title: "Lucifer",
-      author: "Cloe",
-      coverImage: "Lucifer.jpg",
-    },
-    user: {
-      id: "e4abdb1b-c337-4bcc-a269-e714d7d62840",
-      email: "jade@gmail.com",
-    },
-  },
-  {
-    id: "5a45dd3d-0b9a-4c3c-99a8-56ecca052744",
-    borrowDate: "2025-01-21T00:13:10.995Z",
-    returnDate: "2025-01-21T01:58:26.107Z",
-    status: "returned",
-    book: {
-      id: "2838e688-3379-44c3-8b98-f72e3e2d2ff0",
-      title: "Lucifer",
-      author: "Cloe",
-      coverImage: "Lucifer.jpg",
-    },
-    user: {
-      id: "e4abdb1b-c337-4bcc-a269-e714d7d62840",
-      email: "jade@gmail.com",
-    },
-  },
-  {
-    id: "5a45dd3d-0b9a-4c3c-99a8-56ecca052744",
-    borrowDate: "2025-01-21T00:13:10.995Z",
-    returnDate: "2025-01-21T01:58:26.107Z",
-    status: "returned",
-    book: {
-      id: "2838e688-3379-44c3-8b98-f72e3e2d2ff0",
-      title: "Lucifer",
-      author: "Cloe",
-      coverImage: "Lucifer.jpg",
-    },
-    user: {
-      id: "e4abdb1b-c337-4bcc-a269-e714d7d62840",
-      email: "jade@gmail.com",
-    },
-  },
-];
+const Borrowing: React.FC<BorrowingProps> = () => {
+  const { data, isLoading } = useGetBorrowBooksQuery();
 
-const Borrowing: React.FC<BorrowingProps> = ({}) => {
   return (
     <Layout>
       <div className="p-8">
@@ -98,25 +36,37 @@ const Borrowing: React.FC<BorrowingProps> = ({}) => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {data.map((item, index) => (
-                  <TableRow key={item.id}>
-                    <TableCell className="text-center font-medium">{index + 1}</TableCell>
-                    <TableCell>
-                      <img
-                        src={"https://i1.sndcdn.com/avatars-njtnly1CSaXFBoFn-SxMbXQ-t1080x1080.jpg"}
-                        alt={item.book.title}
-                        className="w-11 h-11 rounded-md object-cover"
+                {!isLoading && data?.data && data.data.length > 0 ? (
+                  data.data.map((item, index) => (
+                    <TableRow key={item.id}>
+                      <TableCell className="text-center font-medium">{index + 1}</TableCell>
+                      <TableCell>
+                        <img
+                          src={`http://localhost:5000/public/${item?.book?.coverImage}`}
+                          alt={item.book?.title || "No Title"}
+                          className="w-11 h-11 rounded-md object-cover"
+                        />
+                      </TableCell>
+                      <TableCell className="font-medium">{item.book?.title}</TableCell>
+                      <TableCell>
+                        <Badge variant={item.status === "borrowed" ? "destructive" : "success"}>{item.status}</Badge>
+                      </TableCell>
+                      <TableCell>{formatUSDateTimeShort(item.borrowDate)}</TableCell>
+                      <TableCell>{item.returnDate ? formatUSDateTimeShort(item.returnDate) : "Not Returned"}</TableCell>
+                      <TableCell>{item.user?.email}</TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={7}>
+                      <EmptyState
+                        icon={FolderX}
+                        title="No Borrowing Records"
+                        description="No books have been borrowed yet."
                       />
                     </TableCell>
-                    <TableCell className="font-medium">{item.book.title}</TableCell>
-                    <TableCell>
-                      <Badge variant={item.status === "borrowed" ? "destructive" : "success"}>{item.status}</Badge>
-                    </TableCell>
-                    <TableCell>{formatUSDateTimeShort(item.borrowDate)}</TableCell>
-                    <TableCell>{item.returnDate ? formatUSDateTimeShort(item.returnDate) : "Null"}</TableCell>
-                    <TableCell>{item.user.email}</TableCell>
                   </TableRow>
-                ))}
+                )}
               </TableBody>
             </Table>
           </ScrollArea>

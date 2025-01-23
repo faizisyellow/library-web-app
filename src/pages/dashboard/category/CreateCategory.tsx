@@ -6,14 +6,23 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useCreateCategoriesMutation } from "@/store/service/categories";
+import { getErrorObject } from "@/lib/helpers/error-message";
+import { useToast } from "@/hooks/use-toast";
+import { ToastAction } from "@/components/ui/toast";
 
-interface CreateCategoryProps {}
+interface CreateCategoryProps {
+  closeForm: () => void;
+}
 
 const formSchema = z.object({
-  name: z.string().min(1),
+  name: z.string().min(1, "Name is required"),
 });
 
-const CreateCategory: React.FC<CreateCategoryProps> = ({}) => {
+const CreateCategory: React.FC<CreateCategoryProps> = ({ closeForm }) => {
+  const [addCategory] = useCreateCategoriesMutation();
+  const { toast } = useToast();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -21,10 +30,30 @@ const CreateCategory: React.FC<CreateCategoryProps> = ({}) => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const response = await addCategory(values);
+
+      const error = getErrorObject(response.error);
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: error.messages,
+          action: <ToastAction altText="Try again">Try again</ToastAction>,
+        });
+        return;
+      }
+
+      toast({
+        variant: "default",
+        title: "Category Added Successfully",
+      });
+
+      form.reset();
+      closeForm();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
