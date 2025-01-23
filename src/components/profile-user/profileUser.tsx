@@ -1,8 +1,14 @@
 import { ChevronsUpDown, LogOut, Sparkles } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
+import { useLogoutMutation } from "@/store/service/auth";
+import Cookies from "js-cookie";
+import { getErrorObject } from "@/lib/helpers/error-message";
+import { toast } from "@/hooks/use-toast";
+import { ToastAction } from "../ui/toast";
+import { useNavigate } from "react-router";
 
 export function ProfileUser({
   user,
@@ -13,7 +19,32 @@ export function ProfileUser({
     avatar: string;
   };
 }) {
+  const [Logout] = useLogoutMutation();
   const { isMobile } = useSidebar();
+  const role = JSON.parse(localStorage.getItem("role") || "null");
+  const navigate = useNavigate();
+
+  async function handleLogout() {
+    try {
+      const response = await Logout();
+
+      const error = getErrorObject(response.error);
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: error.messages,
+          action: <ToastAction altText="Try again">Try again</ToastAction>,
+        });
+        return;
+      }
+
+      localStorage.clear();
+      Cookies.remove("token");
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <SidebarMenu>
@@ -59,15 +90,17 @@ export function ProfileUser({
                 </div>
               </div>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Sparkles />
-                My borrowing
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            {role === "USER" && (
+              <>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <Sparkles />
+                  My borrowing
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+              </>
+            )}
+            <DropdownMenuItem onClick={handleLogout}>
               <LogOut />
               Log out
             </DropdownMenuItem>
