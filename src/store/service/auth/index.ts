@@ -5,6 +5,7 @@ import { LoginRequest, SignupRequest } from "./type";
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: defaultBaseQuery,
+  refetchOnMountOrArgChange: true,
   tagTypes: ["Auth"],
   endpoints: (builder) => ({
     login: builder.mutation<any, LoginRequest>({

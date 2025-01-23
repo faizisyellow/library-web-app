@@ -7,87 +7,21 @@ import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal, Pencil, Trash } from "lucide-react";
 import { useNavigate } from "react-router";
+import { useDeleteBooksMutation, useGetBooksQuery } from "@/store/service/books";
 
 interface BooksProps {}
 
-const data = [
-  {
-    id: "2838e688-3379-44c3-8b98-f72e3e2d2ff0",
-    title: "Lucifer",
-    author: "Cloe",
-    coverImage: "Lucifer.jpg",
-    category: {
-      id: "b6a11a16-1c25-430d-ad91-afc0b9941aa3",
-      name: "Fantasy",
-    },
-  },
-  {
-    id: "2838e688-3379-44c3-8b98-f72e3e2d2ff0",
-    title: "Lucifer",
-    author: "Cloe",
-    coverImage: "Lucifer.jpg",
-    category: {
-      id: "b6a11a16-1c25-430d-ad91-afc0b9941aa3",
-      name: "Fantasy",
-    },
-  },
-  {
-    id: "2838e688-3379-44c3-8b98-f72e3e2d2ff0",
-    title: "Lucifer",
-    author: "Cloe",
-    coverImage: "Lucifer.jpg",
-    category: {
-      id: "b6a11a16-1c25-430d-ad91-afc0b9941aa3",
-      name: "Fantasy",
-    },
-  },
-  {
-    id: "2838e688-3379-44c3-8b98-f72e3e2d2ff0",
-    title: "Lucifer",
-    author: "Cloe",
-    coverImage: "Lucifer.jpg",
-    category: {
-      id: "b6a11a16-1c25-430d-ad91-afc0b9941aa3",
-      name: "Fantasy",
-    },
-  },
-  {
-    id: "2838e688-3379-44c3-8b98-f72e3e2d2ff0",
-    title: "Lucifer morningstart the devil",
-    author: "apa ya aplaah asdjoasjdao ashdisahdiaisi",
-    coverImage: "Lucifer.jpg",
-    category: {
-      id: "b6a11a16-1c25-430d-ad91-afc0b9941aa3",
-      name: "Fantasy asd apalah",
-    },
-  },
-  {
-    id: "2838e688-3379-44c3-8b98-f72e3e2d2ff0",
-    title: "Lucifer morningstart the devil",
-    author: "apa ya aplaah asdjoasjdao ashdisahdiaisi",
-    coverImage: "Lucifer.jpg",
-    category: {
-      id: "b6a11a16-1c25-430d-ad91-afc0b9941aa3",
-      name: "Fantasy asd apalah",
-    },
-  },
-  {
-    id: "2838e688-3379-44c3-8b98-f72e3e2d2ff0",
-    title: "Lucifer morningstart the devil",
-    author: "apa ya aplaah asdjoasjdao ashdisahdiaisi",
-    coverImage: "Lucifer.jpg",
-    category: {
-      id: "b6a11a16-1c25-430d-ad91-afc0b9941aa3",
-      name: "Fantasy asd apalah",
-    },
-  },
-];
-
 const Books: React.FC<BooksProps> = () => {
+  const { data } = useGetBooksQuery();
+  const [deleteBook] = useDeleteBooksMutation();
   const navigate = useNavigate();
 
-  const handleDelete = (id: string) => {
-    console.log("Delete book:", id);
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteBook(id);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -97,7 +31,7 @@ const Books: React.FC<BooksProps> = () => {
           title="Books"
           description="List All Books"
         />
-        <ScrollArea className="mt-6 border rounded-md h-[58%]">
+        <ScrollArea className="mt-6 border rounded-md h-[80%]">
           <Table>
             <TableHeader>
               <TableRow>
@@ -109,12 +43,12 @@ const Books: React.FC<BooksProps> = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.map((book, index) => (
+              {data?.data?.map((book, index) => (
                 <TableRow key={book.id}>
                   <TableCell className="text-center font-medium">{index + 1}</TableCell>
                   <TableCell>
                     <img
-                      src={"https://i1.sndcdn.com/avatars-njtnly1CSaXFBoFn-SxMbXQ-t1080x1080.jpg"}
+                      src={`http://localhost:5000/public/${book.coverImage}`}
                       alt={book.title}
                       className="w-11 h-11 rounded-md object-cover"
                     />

@@ -5,6 +5,7 @@ import { UseFormReturn } from "react-hook-form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { useGetCategoriesQuery } from "@/store/service/categories";
 
 interface ProductFormProps {
   form: UseFormReturn<{
@@ -17,22 +18,9 @@ interface ProductFormProps {
   isLoading: boolean;
 }
 
-const category = [
-  {
-    id: "1",
-    name: "fantasy",
-  },
-  {
-    id: "2",
-    name: "action",
-  },
-  {
-    id: "3",
-    name: "advanture",
-  },
-];
-
 const BookForm: React.FC<ProductFormProps> = ({ form, onSubmit, isLoading }) => {
+  const { data } = useGetCategoriesQuery();
+
   return (
     <Card>
       <CardContent className="py-8">
@@ -115,7 +103,7 @@ const BookForm: React.FC<ProductFormProps> = ({ form, onSubmit, isLoading }) => 
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {category.map((cat) => (
+                        {data?.data?.map((cat) => (
                           <SelectItem
                             key={cat.id}
                             value={cat.id}

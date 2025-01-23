@@ -1,13 +1,12 @@
+import store from "./store";
+import "./index.css";
+import RootRouter from "./router";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
 import { BrowserRouter } from "react-router";
-import RootRouter from "./router";
 import { ThemeProvider } from "./components/theme/ThemeProvider";
 import { Provider } from "react-redux";
-import store from "./store";
 import { Toaster } from "./components/ui/toaster";
-import { CookiesProvider } from "react-cookie";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -17,9 +16,7 @@ createRoot(document.getElementById("root")!).render(
           defaultTheme="dark"
           storageKey="vite-ui-theme"
         >
-          <CookiesProvider defaultSetOptions={{ path: "/" }}>
-            <RootRouter />
-          </CookiesProvider>
+          <RootRouter />
         </ThemeProvider>
       </BrowserRouter>
       <Toaster />

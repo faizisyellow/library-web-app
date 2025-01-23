@@ -1,6 +1,12 @@
-import { Bar, BarChart, CartesianGrid, Rectangle, XAxis } from "recharts";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { CategoryBooksData } from "@/store/service/dashboard/type";
+import React from "react";
+import { Bar, BarChart, CartesianGrid, Rectangle, XAxis } from "recharts";
+
+interface ChartOverviewProps {
+  data: CategoryBooksData[];
+}
 
 const chartConfig = {
   books: {
@@ -25,12 +31,12 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-function ChartOverview({ data }) {
+const ChartOverview: React.FC<ChartOverviewProps> = ({ data }) => {
   // Transform the data to include fill color
-  const transformedData = data.map((item) => ({
-    category: item.category,
-    books: item.books,
-    fill: chartConfig[item.category]?.color || "hsl(var(--chart-5))",
+  const transformedData = data?.map((item) => ({
+    category: item?.category ?? 0,
+    books: item?.books ?? 0,
+    fill: chartConfig[item?.category]?.color ?? "hsl(var(--chart-5))",
   }));
 
   return (
@@ -86,6 +92,6 @@ function ChartOverview({ data }) {
       </CardContent>
     </Card>
   );
-}
+};
 
 export default ChartOverview;
