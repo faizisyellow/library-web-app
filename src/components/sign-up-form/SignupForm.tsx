@@ -57,7 +57,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ className, ...props }: React.Co
       localStorage.setItem("role", JSON.stringify(response.data.data.user.role));
       Cookies.set("token", response.data.data.token, { secure: true, sameSite: "None", expires: 60 * 24 * 60 * 60 * 1000 });
 
-      navigate("/");
+      navigate("/login");
     } catch (error) {
       form.reset();
       console.log(error);
@@ -78,7 +78,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ className, ...props }: React.Co
             >
               <div className="flex flex-col items-center text-center">
                 <h1 className="text-2xl font-bold">Create Your Account</h1>
-                <p className="text-balance text-muted-foreground">Sign up to your Acme Inc account</p>
+                <p className="text-balance text-muted-foreground">Sign up to your UW Lib account</p>
               </div>
               <div className="grid grid-cols-2 gap-4 my-8">
                 <FormField

@@ -74,7 +74,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ className, ...props }: React.Comp
               <div className="flex flex-col gap-6">
                 <div className="flex flex-col items-center text-center">
                   <h1 className="text-2xl font-bold">Welcome back</h1>
-                  <p className="text-balance text-muted-foreground">Login to your Acme Inc account</p>
+                  <p className="text-balance text-muted-foreground">Login to your UW Lib account</p>
                 </div>
                 <FormField
                   control={form.control}

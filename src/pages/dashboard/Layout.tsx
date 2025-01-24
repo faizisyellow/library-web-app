@@ -3,19 +3,32 @@ import { DashboardSidebar } from "@/components/dashboard-sidebar/DashboardSideba
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { ProfileUser } from "@/components/profile-user/profileUser";
 import { ModeToggle } from "@/components/mode-toggle/ModeToggle";
+import { useGetProfileQuery } from "@/store/service/profile";
 
 interface LayoutProps {
   children: React.JSX.Element;
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
+  const { data: user } = useGetProfileQuery();
+
+  const avatarAlt = (firstname: string, lastname: string): string => {
+    let f = firstname?.charAt(0) ?? "";
+    let l = lastname?.charAt(0) ?? "";
+
+    const alt = f + l;
+    return alt;
+  };
+
   const data = {
     user: {
-      name: "shadcn",
-      email: "m@example.com",
-      avatar: "lm",
+      name: user?.data?.user?.username,
+      email: user?.data?.user?.email,
+      avatar: user?.data?.photo,
+      fallbackAvatar: avatarAlt(user?.data?.firstName!, user?.data?.lastName!),
     },
   };
+
   return (
     <SidebarProvider>
       <DashboardSidebar />

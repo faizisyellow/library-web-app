@@ -6,6 +6,7 @@ import { booksApi } from "./service/books";
 import { categoriesApi } from "./service/categories";
 import { borrowingApi } from "./service/borrowing";
 import { dashboardOverviewApi } from "./service/dashboard";
+import { profileApi } from "./service/profile";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     [categoriesApi.reducerPath]: categoriesApi.reducer,
     [borrowingApi.reducerPath]: borrowingApi.reducer,
     [dashboardOverviewApi.reducerPath]: dashboardOverviewApi.reducer,
+    [profileApi.reducerPath]: profileApi.reducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(...middleware),
 });

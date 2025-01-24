@@ -28,7 +28,7 @@ export interface GetBooksResponse {
       name: string;
     };
     coverImage: string;
-  };
+  }[];
   message: string;
   status: string;
 }
