@@ -13,7 +13,6 @@ interface ExploreProps {}
 const Explore: React.FC<ExploreProps> = ({}) => {
   const { data } = useGetBooksQuery();
   const [handleBorrow] = useCreateBorrowBookMutation();
-  console.log(data?.data);
 
   async function borrow(id: string) {
     try {

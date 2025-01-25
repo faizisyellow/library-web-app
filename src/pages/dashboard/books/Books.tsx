@@ -12,7 +12,7 @@ import { getErrorObject } from "@/lib/helpers/error-message";
 import { useToast } from "@/hooks/use-toast";
 import EmptyState from "@/components/empty-state/EmptyState";
 
-interface BooksProps {}
+interface BooksProps { }
 
 const Books: React.FC<BooksProps> = () => {
   const [deleteBook] = useDeleteBooksMutation();

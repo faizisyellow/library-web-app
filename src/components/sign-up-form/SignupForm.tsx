@@ -13,9 +13,9 @@ import { SignupRequest } from "@/store/service/auth/type";
 import { getErrorObject } from "@/lib/helpers/error-message";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "../ui/toast";
-import Cookies from "js-cookie";
 
-interface SignupFormProps {}
+
+interface SignupFormProps { }
 
 const formSchema = z.object({
   username: z.string().min(1),
@@ -28,7 +28,6 @@ const formSchema = z.object({
 const SignupForm: React.FC<SignupFormProps> = ({ className, ...props }: React.ComponentProps<"div">) => {
   const [handleSignUp] = useSignupMutation();
   const { toast } = useToast();
-  const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -54,10 +53,8 @@ const SignupForm: React.FC<SignupFormProps> = ({ className, ...props }: React.Co
         return;
       }
 
-      localStorage.setItem("role", JSON.stringify(response.data.data.user.role));
-      Cookies.set("token", response.data.data.token, { secure: true, sameSite: "None", expires: 60 * 24 * 60 * 60 * 1000 });
 
-      navigate("/login");
+      window.location.replace('/login')
     } catch (error) {
       form.reset();
       console.log(error);

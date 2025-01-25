@@ -6,9 +6,9 @@ import RecentBorrow from "./RecentBorrow";
 import { Book, ChartColumnStacked, ChartSpline, Users } from "lucide-react";
 import { useGetDashboardOverviewQuery } from "@/store/service/dashboard";
 
-interface OverviewProps {}
+interface OverviewProps { }
 
-const Overview: React.FC<OverviewProps> = ({}) => {
+const Overview: React.FC<OverviewProps> = ({ }) => {
   const { data } = useGetDashboardOverviewQuery();
 
   return (

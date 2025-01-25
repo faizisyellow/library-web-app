@@ -4,14 +4,14 @@ import { useGetProfileQuery } from "@/store/service/profile";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { ChevronsUpDown, LogOut, Sparkles } from "lucide-react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useLogoutMutation } from "@/store/service/auth";
 import { getErrorObject } from "@/lib/helpers/error-message";
 import { toast } from "@/hooks/use-toast";
 import { ToastAction } from "../ui/toast";
 import Cookies from "js-cookie";
 
-interface NavbarProps {}
+interface NavbarProps { }
 
 const Navbar: React.FC<NavbarProps> = () => {
   const role = JSON.parse(localStorage.getItem("role") || "null");
@@ -43,7 +43,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 
       localStorage.clear();
       Cookies.remove("token");
-      navigate("/login");
+      window.location.replace('/login')
     } catch (error) {
       console.log(error);
     }
@@ -61,7 +61,9 @@ const Navbar: React.FC<NavbarProps> = () => {
   return (
     <nav className="w-full bg-[#4B2E83] text-white py-4 px-6">
       <div className="container mx-auto flex justify-between items-center">
-        <div className="text-2xl font-bold">UW LIB</div>
+        <Link to={'/'}>
+          <div className="text-2xl font-bold">UW LIB</div>
+        </Link>
         <div className="flex items-center space-x-4">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -106,10 +108,12 @@ const Navbar: React.FC<NavbarProps> = () => {
               {role === "USER" && (
                 <>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem className="hover:bg-accent">
-                    <Sparkles className="mr-2 dark:text-white" />
-                    My borrowing
-                  </DropdownMenuItem>
+                  <Link to={'/my-borrowing-book'}>
+                    <DropdownMenuItem className="hover:bg-accent">
+                      <Sparkles className="mr-2 dark:text-white" />
+                      My borrowing
+                    </DropdownMenuItem>
+                  </Link>
                 </>
               )}
               <DropdownMenuSeparator />
