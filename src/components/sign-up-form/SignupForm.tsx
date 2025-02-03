@@ -27,6 +27,7 @@ const formSchema = z.object({
 
 const SignupForm: React.FC<SignupFormProps> = ({ className, ...props }: React.ComponentProps<"div">) => {
   const [handleSignUp] = useSignupMutation();
+  const navigate = useNavigate()
   const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -53,8 +54,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ className, ...props }: React.Co
         return;
       }
 
-
-      window.location.replace('/login')
+      navigate("/")
     } catch (error) {
       form.reset();
       console.log(error);
