@@ -8,8 +8,9 @@ import { formatUSDateTimeShort } from "@/lib/format/time";
 import { useGetBorrowBooksQuery } from "@/store/service/borrowing";
 import EmptyState from "@/components/empty-state/EmptyState";
 import { FolderX } from "lucide-react";
+import capitalizeFirstLetter from "@/lib/format/text/Capitalize";
 
-interface BorrowingProps {}
+interface BorrowingProps { }
 
 const Borrowing: React.FC<BorrowingProps> = () => {
   const { data, isLoading } = useGetBorrowBooksQuery();
@@ -49,7 +50,7 @@ const Borrowing: React.FC<BorrowingProps> = () => {
                       </TableCell>
                       <TableCell className="font-medium">{item.book?.title}</TableCell>
                       <TableCell>
-                        <Badge variant={item.status === "borrowed" ? "destructive" : "success"}>{item.status}</Badge>
+                        <Badge variant={item.status === "borrowed" ? "destructive" : "success"}>{capitalizeFirstLetter(item.status)}</Badge>
                       </TableCell>
                       <TableCell>{formatUSDateTimeShort(item.borrowDate)}</TableCell>
                       <TableCell>{item.returnDate ? formatUSDateTimeShort(item.returnDate) : "Not Returned"}</TableCell>

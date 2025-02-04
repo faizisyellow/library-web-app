@@ -45,16 +45,22 @@ const SignupForm: React.FC<SignupFormProps> = ({ className, ...props }: React.Co
       const response = await handleSignUp(values as SignupRequest);
 
       const error = getErrorObject(response.error);
+
       if (error) {
         toast({
           variant: "destructive",
-          title: error.messages,
+          title: "ERROR VALIDATION",
           action: <ToastAction altText="Try again">Try again</ToastAction>,
         });
-        return;
+        return
       }
 
-      navigate("/")
+      toast({
+        variant: "default",
+        title: "Sign Up Successfully",
+      });
+
+      navigate("/login")
     } catch (error) {
       form.reset();
       console.log(error);

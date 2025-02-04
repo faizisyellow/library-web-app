@@ -16,6 +16,7 @@ import { ToastAction } from '@/components/ui/toast';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useLocation, useNavigate } from 'react-router';
+import capitalizeFirstLetter from '@/lib/format/text/Capitalize';
 
 
 interface MyBorrowProps { }
@@ -118,7 +119,7 @@ const MyBorrow: React.FC<MyBorrowProps> = () => {
                                             </TableCell>
                                             <TableCell className="font-medium">{item.book?.title}</TableCell>
                                             <TableCell>
-                                                <Badge variant={item.status === "borrowed" ? "destructive" : "success"}>{item.status}</Badge>
+                                                <Badge variant={item.status === "borrowed" ? "destructive" : "success"}>{capitalizeFirstLetter(item.status)}</Badge>
                                             </TableCell>
                                             <TableCell>{formatUSDateTimeShort(item.borrowDate)}</TableCell>
                                             <TableCell>{item.returnDate ? formatUSDateTimeShort(item.returnDate) : "Not Returned"}</TableCell>
