@@ -19,6 +19,7 @@ const formSchema = z.object({
   author: z.string().min(1, "Author is required"),
   coverImage: z.union([z.instanceof(File), z.string().optional()]).optional(),
   categoryId: z.string().min(1, "Category is required"),
+  stock: z.string().min(1, "Stock is required"),
 });
 
 const CreateBook: React.FC<CreateBookProps> = () => {
@@ -33,6 +34,7 @@ const CreateBook: React.FC<CreateBookProps> = () => {
       author: "",
       coverImage: undefined,
       categoryId: "",
+      stock: "0",
     },
   });
 
@@ -42,6 +44,7 @@ const CreateBook: React.FC<CreateBookProps> = () => {
       formData.append("title", values.title);
       formData.append("author", values.author);
       formData.append("categoryId", values.categoryId);
+      formData.append("stock", values.stock);
 
       if (values.coverImage instanceof File) {
         formData.append("coverImage", values.coverImage);

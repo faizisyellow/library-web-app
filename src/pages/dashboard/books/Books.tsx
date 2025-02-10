@@ -56,6 +56,7 @@ const Books: React.FC<BooksProps> = () => {
                 <TableHead className="w-100">Title</TableHead>
                 <TableHead className="w-52">Author</TableHead>
                 <TableHead className="w-48">Category</TableHead>
+                <TableHead className="w-48">Stock</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -88,6 +89,7 @@ const Books: React.FC<BooksProps> = () => {
                     <TableCell className="font-medium">{book.title}</TableCell>
                     <TableCell>{book.author}</TableCell>
                     <TableCell>{book.category.name}</TableCell>
+                    <TableCell>{book.stock}</TableCell>
                     <TableCell className="text-right">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>

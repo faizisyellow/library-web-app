@@ -23,6 +23,7 @@ export interface GetBooksResponse {
     id: string;
     title: string;
     author: string;
+    stock:number;
     category: {
       id: string;
       name: string;

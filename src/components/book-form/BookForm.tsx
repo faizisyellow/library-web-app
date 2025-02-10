@@ -12,6 +12,7 @@ interface BookFormProps {
     title: string;
     author: string;
     categoryId: string;
+    stock: string;
     coverImage?: string | File | undefined;
   }>;
   onSubmit: (values: any) => void;
@@ -120,6 +121,24 @@ const BookForm: React.FC<BookFormProps> = ({ form, onSubmit, isLoading, mode = "
                 )}
               />
             </div>
+            <FormField
+                control={form.control}
+                name="stock"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Stock</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        disabled={isLoading}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
             <div className="flex justify-end mt-8">
               <Button
                 type="submit"

@@ -19,6 +19,7 @@ const formSchema = z.object({
   author: z.string().min(1, "Author is required"),
   coverImage: z.union([z.instanceof(File), z.string().optional()]).optional(),
   categoryId: z.string().min(1, "Category is required"),
+  stock: z.string().min(1, "Stock is required"),
 });
 
 const EditBook: React.FC<EditBookProps> = () => {
@@ -35,6 +36,7 @@ const EditBook: React.FC<EditBookProps> = () => {
       author: "",
       coverImage: undefined,
       categoryId: "",
+      stock: "0",
     },
   });
 
@@ -46,6 +48,7 @@ const EditBook: React.FC<EditBookProps> = () => {
         author: bookData.data.author,
         coverImage: bookData.data.coverImage ?? undefined,
         categoryId: bookData.data.category?.id,
+        stock: bookData.data.stock,
       });
     }
   }, [bookData, form.reset]);
