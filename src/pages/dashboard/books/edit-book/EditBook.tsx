@@ -48,7 +48,7 @@ const EditBook: React.FC<EditBookProps> = () => {
         author: bookData.data.author,
         coverImage: bookData.data.coverImage ?? undefined,
         categoryId: bookData.data.category?.id,
-        stock: bookData.data.stock,
+        stock: String(bookData.data.stock),
       });
     }
   }, [bookData, form.reset]);
@@ -63,6 +63,7 @@ const EditBook: React.FC<EditBookProps> = () => {
       formData.append("title", values.title);
       formData.append("author", values.author);
       formData.append("categoryId", values.categoryId);
+      formData.append("stock", values.stock);
 
       if (values.coverImage instanceof File) {
         // New file uploaded
