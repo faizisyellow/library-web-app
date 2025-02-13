@@ -60,6 +60,8 @@ const MyBorrow: React.FC<MyBorrowProps> = () => {
                 variant: "default",
                 title: "Book Returned Successfully",
             });
+
+            setStatusFilter("returned")
         } catch (error) {
             console.log(error);
         }
