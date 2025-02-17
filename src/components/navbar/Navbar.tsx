@@ -4,18 +4,16 @@ import { useGetProfileQuery } from "@/store/service/profile";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { ChevronsUpDown, LogOut, Sparkles } from "lucide-react";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import { useLogoutMutation } from "@/store/service/auth";
 import { getErrorObject } from "@/lib/helpers/error-message";
 import { toast } from "@/hooks/use-toast";
-import { ToastAction } from "../ui/toast";
 import Cookies from "js-cookie";
 
 interface NavbarProps { }
 
 const Navbar: React.FC<NavbarProps> = () => {
   const role = JSON.parse(localStorage.getItem("role") || "null");
-  const navigate = useNavigate();
   const { data: user } = useGetProfileQuery();
   const [Logout] = useLogoutMutation();
 
@@ -36,7 +34,6 @@ const Navbar: React.FC<NavbarProps> = () => {
         toast({
           variant: "destructive",
           title: error.messages,
-          action: <ToastAction altText="Try again">Try again</ToastAction>,
         });
         return;
       }
@@ -61,7 +58,8 @@ const Navbar: React.FC<NavbarProps> = () => {
   return (
     <nav className="w-full bg-[#4B2E83] text-white py-4 px-6">
       <div className="container mx-auto flex justify-between items-center">
-        <Link to={'/'}>
+        <Link to={'/'} className="flex items-center gap-4">
+          <img src="https://depts.washington.edu/compfin/web/wp-content/uploads/2015/09/cropped-UW-logo-512.png" alt="" className="h-11" />
           <div className="text-2xl font-bold">UW LIB</div>
         </Link>
         <div className="flex items-center space-x-4">

@@ -6,6 +6,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { useGetCategoriesQuery } from "@/store/service/categories";
+import { cn } from "@/lib/utils";
 
 interface BookFormProps {
   form: UseFormReturn<{
@@ -39,6 +40,7 @@ const BookForm: React.FC<BookFormProps> = ({ form, onSubmit, isLoading, mode = "
                         type="text"
                         disabled={isLoading}
                         {...field}
+                        className={cn(form.formState.errors.title && "border-red-500")}
                       />
                     </FormControl>
                     <FormMessage />
@@ -64,6 +66,7 @@ const BookForm: React.FC<BookFormProps> = ({ form, onSubmit, isLoading, mode = "
                             }
                           }}
                           {...field}
+                          className={cn(form.formState.errors.coverImage && "border-red-500")}
                         />
                       </div>
                     </FormControl>
@@ -84,6 +87,7 @@ const BookForm: React.FC<BookFormProps> = ({ form, onSubmit, isLoading, mode = "
                         type="text"
                         disabled={isLoading}
                         {...field}
+                        className={cn(form.formState.errors.author && "border-red-500")}
                       />
                     </FormControl>
                     <FormMessage />
@@ -132,6 +136,7 @@ const BookForm: React.FC<BookFormProps> = ({ form, onSubmit, isLoading, mode = "
                         type="text"
                         disabled={isLoading}
                         {...field}
+                        className={cn(form.formState.errors.stock && "border-red-500")}
                       />
                     </FormControl>
                     <FormMessage />

@@ -6,7 +6,7 @@ import { useGetBooksQuery } from "@/store/service/books";
 import { useCreateBorrowBookMutation } from "@/store/service/borrowing";
 import { getErrorObject } from "@/lib/helpers/error-message";
 import { toast } from "@/hooks/use-toast";
-import { ToastAction } from "@/components/ui/toast";
+
 
 interface ExploreProps {}
 
@@ -23,7 +23,6 @@ const Explore: React.FC<ExploreProps> = ({}) => {
         toast({
           variant: "destructive",
           title: error.messages,
-          action: <ToastAction altText="Try again">Try again</ToastAction>,
         });
         return;
       }

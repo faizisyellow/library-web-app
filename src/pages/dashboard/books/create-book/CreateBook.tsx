@@ -2,7 +2,6 @@ import React from "react";
 import Layout from "../../Layout";
 import Title from "@/components/ui/title";
 import BookForm from "@/components/book-form/BookForm";
-
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -57,7 +56,6 @@ const CreateBook: React.FC<CreateBookProps> = () => {
         toast({
           variant: "destructive",
           title: error.messages,
-          action: <ToastAction altText="Try again">Try again</ToastAction>,
         });
         return;
       }

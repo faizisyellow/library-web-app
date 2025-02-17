@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardContent } from "../ui/card";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
@@ -14,18 +14,26 @@ import { getErrorObject } from "@/lib/helpers/error-message";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "../ui/toast";
 import Cookies from "js-cookie";
+import { Eye, EyeOff } from "lucide-react";
 
 interface LoginFormProps {}
 
 const formSchema = z.object({
-  email: z.string().min(1).email(),
-  password: z.string().min(1),
+  email: z.string().min(1, "Email is required")
+  .email("Invalid email address")
+  .refine((email) => email.includes("@"), "Email must contain @"),
+  password: z.string().min(1, "Password is required"),
 });
 
 const LoginForm: React.FC<LoginFormProps> = ({ className, ...props }: React.ComponentProps<"div">) => {
+  const [showPassword, setShowPassword] = useState(false);
   const [login] = useLoginMutation();
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -85,8 +93,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ className, ...props }: React.Comp
                       <FormControl>
                         <Input
                           type="email"
-                          placeholder="m@example.com"
+                          placeholder="lizzymcalpine@example.com"
                           {...field}
+                          className={cn(form.formState.errors.email && "border-red-500")}
                         />
                       </FormControl>
                       <FormMessage />
@@ -100,18 +109,37 @@ const LoginForm: React.FC<LoginFormProps> = ({ className, ...props }: React.Comp
                     <FormItem>
                       <FormLabel>Password</FormLabel>
                       <FormControl>
-                        <Input
-                          type="password"
-                          {...field}
-                        />
+                        <div className="relative">
+                          <Input
+                            type={showPassword ? "text" : "password"}
+                            placeholder="••••••••"
+                            {...field}
+                            className={cn(
+                              "pr-10",
+                              form.formState.errors.password && "border-red-500"
+                            )}
+                          />
+                          <button
+                            type="button"
+                            onClick={togglePasswordVisibility}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+                          >
+                            {showPassword ? (
+                              <EyeOff className="h-4 w-4" />
+                            ) : (
+                              <Eye className="h-4 w-4" />
+                            )}
+                          </button>
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-                <Button
+                 <Button
                   type="submit"
                   className="w-full"
+                  disabled={!form.formState.isValid || form.formState.isSubmitting}
                 >
                   Login
                 </Button>

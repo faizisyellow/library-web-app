@@ -10,6 +10,7 @@ import { useCreateCategoriesMutation } from "@/store/service/categories";
 import { getErrorObject } from "@/lib/helpers/error-message";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
+import { cn } from "@/lib/utils";
 
 interface CreateCategoryProps {
   closeForm: () => void;
@@ -74,6 +75,7 @@ const CreateCategory: React.FC<CreateCategoryProps> = ({ closeForm }) => {
                     <Input
                       type="category"
                       {...field}
+                      className={cn(form.formState.errors.name && "border-red-500")}
                     />
                   </FormControl>
                   <FormMessage />
