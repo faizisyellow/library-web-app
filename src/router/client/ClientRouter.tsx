@@ -1,6 +1,7 @@
 import Explore from "@/pages/explore/Explore";
 import MyBorrow from "@/pages/my-borrow/MyBorrow";
-import path from "path";
+import Profile from "@/pages/settings/profile/Profile";
+
 
 const ClientRouter = [
   {
@@ -10,6 +11,10 @@ const ClientRouter = [
   {
     path: "/my-borrowing-book",
     element:<MyBorrow/>
+  },
+  {
+    path: "/settings/profile",
+    element:<Profile/>
   }
 ];
 

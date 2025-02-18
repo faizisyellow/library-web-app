@@ -21,7 +21,6 @@ export function ProfileUser({
   };
 }) {
   const [Logout] = useLogoutMutation();
-  const { isMobile } = useSidebar();
   const role = JSON.parse(localStorage.getItem("role") || "null");
   const navigate = useNavigate();
 

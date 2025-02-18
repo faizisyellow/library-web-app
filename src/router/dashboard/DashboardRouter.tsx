@@ -4,12 +4,18 @@ import EditBook from "@/pages/dashboard/books/edit-book/EditBook";
 import Borrowing from "@/pages/dashboard/borrowing/Borrowing";
 import Category from "@/pages/dashboard/category/Category";
 import Overview from "@/pages/dashboard/overview/Overview";
+import Profile from "@/pages/settings/profile/Profile";
 
 const DashboardRouter = [
   {
     index: true,
     path: "/dashboard",
     element: <Overview />,
+  },
+  {
+    index: true,
+    path: "/dashboard/settings/profile",
+    element: <Profile />,
   },
   {
     path: "/dashboard/books",
