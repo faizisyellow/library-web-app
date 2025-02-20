@@ -14,7 +14,15 @@ export const profileApi = createApi({
       }),
       providesTags: ["Profile"],
     }),
+    updateProfile: builder.mutation<any,  FormData>({
+      query: (payload) => ({
+        url: "profiles",
+        method: "PATCH",
+        body: payload
+      }),
+      invalidatesTags: ["Profile"],
+    }),
   }),
 });
 
-export const { useGetProfileQuery } = profileApi;
+export const { useGetProfileQuery,useUpdateProfileMutation } = profileApi;

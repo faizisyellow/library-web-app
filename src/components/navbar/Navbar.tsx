@@ -68,9 +68,9 @@ const Navbar: React.FC<NavbarProps> = () => {
               <div className="flex items-center space-x-2 cursor-pointer rounded-lg p-1 hover:bg-white/10 transition-colors duration-200">
                 <Avatar className="text-black text-dark-white">
                   <AvatarImage
-                    src={data?.user.avatar}
-                    alt={data?.user.name}
-                    className="dark:invert-0 invert-0"
+                   src={`http://localhost:5000/public/${data?.user?.avatar}`}
+                   alt={data?.user?.name}
+                   className="dark:invert-0 invert-0"
                   />
                   <AvatarFallback className="rounded-lg dark:bg-gray-700 bg-gray-200">{data?.user.fallbackAvatar}</AvatarFallback>
                 </Avatar>
@@ -92,8 +92,8 @@ const Navbar: React.FC<NavbarProps> = () => {
                 <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm hover:bg-accent">
                   <Avatar className="text-black text-dark-white">
                     <AvatarImage
-                      src={data?.user.avatar}
-                      alt={data?.user.name}
+                      src={`http://localhost:5000/public/${data?.user?.avatar}`}
+                      alt={data?.user?.name}
                       className="dark:invert-0 invert-0"
                       />
                     <AvatarFallback className="rounded-lg dark:bg-gray-700 bg-gray-200">{data?.user.fallbackAvatar}</AvatarFallback>

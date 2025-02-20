@@ -10,7 +10,7 @@ import { useEditBooksMutation, useGetBookQuery } from "@/store/service/books";
 import { useNavigate, useParams } from "react-router";
 import { getErrorObject } from "@/lib/helpers/error-message";
 import { useToast } from "@/hooks/use-toast";
-import { ToastAction } from "@/components/ui/toast";
+
 
 interface EditBookProps {}
 
@@ -89,7 +89,6 @@ const EditBook: React.FC<EditBookProps> = () => {
       toast({
         variant: "destructive",
         title: errorObj?.messages || "Failed to update book",
-        action: <ToastAction altText="Try again">Try again</ToastAction>,
       });
     }
   };
