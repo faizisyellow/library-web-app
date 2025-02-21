@@ -8,9 +8,9 @@ export const booksApi = createApi({
   refetchOnMountOrArgChange: true,
   tagTypes: ["Books"],
   endpoints: (builder) => ({
-    getBooks: builder.query<GetBooksResponse, void>({
-      query: () => ({
-        url: "books",
+    getBooks: builder.query<GetBooksResponse, string | void>({
+      query: (title="") => ({
+        url: title ? `books?title=${title}` : "books",
         method: "GET",
       }),
       providesTags: ["Books"],

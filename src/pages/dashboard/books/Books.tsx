@@ -1,26 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import Layout from "../Layout";
 import Title from "@/components/ui/title";
+import EmptyState from "@/components/empty-state/EmptyState";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { FolderX, MoreHorizontal, Pencil, Trash } from "lucide-react";
+import { FolderX, MoreHorizontal, Pencil, Trash, Search } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { useDeleteBooksMutation, useGetBooksQuery } from "@/store/service/books";
 import { getErrorObject } from "@/lib/helpers/error-message";
 import { useToast } from "@/hooks/use-toast";
-import EmptyState from "@/components/empty-state/EmptyState";
+import { Input } from "@/components/ui/input";
 
-interface BooksProps { }
-
-const Books: React.FC<BooksProps> = () => {
+const Books: React.FC = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const { data } = useGetBooksQuery(searchTerm || undefined);
   const [deleteBook] = useDeleteBooksMutation();
-  const { data } = useGetBooksQuery();
-  const emptyData = data && data.data.length < 0;
-
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  const emptyData = data && data.data.length < 0;
 
   const handleDelete = async (id: string) => {
     try {
@@ -31,8 +31,6 @@ const Books: React.FC<BooksProps> = () => {
           variant: "destructive",
           title: error.messages,
         });
-
-        navigate("/");
         return;
       }
     } catch (error) {
@@ -40,13 +38,50 @@ const Books: React.FC<BooksProps> = () => {
     }
   };
 
+  const handleExport = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/v1/books/report", {
+        method: "GET",
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to download report");
+      }
+  
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "books_report.xlsx"); 
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode?.removeChild(link);
+  
+      toast({ title: "Export Successful", description: "Books report downloaded!" });
+    } catch (error) {
+      toast({ variant: "destructive", title: "Export Failed", description: "Error while downloading" });
+    }
+  };
+  
+
   return (
     <Layout>
       <div className="p-8">
-        <Title
-          title="Books"
-          description="List All Books"
-        />
+        <Title title="Books" description="List All Books" />
+        <div className="flex justify-between items-center">
+        <div className="relative my-4">
+            <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500 h-4 w-4" />
+            <Input
+              type="text"
+              placeholder="Search books..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-8 w-64"
+              />
+         </div>
+         <Button variant={"outline"} onClick={handleExport}>Export</Button>
+          </div>
+
         <ScrollArea className="mt-6 border rounded-md">
           <Table>
             <TableHeader>
